@@ -9,7 +9,7 @@ import (
 )
 
 func TestPriorityQueue(t *testing.T) {
-	pq := NewPriorityQueue()
+	pq := New()
 	l := 10
 	e := make([]int, 0, l)
 
@@ -49,7 +49,7 @@ func genrateOutVals(n int) map[string]string {
 }
 
 func TestPriorityQueueRandom(t *testing.T) {
-	pq := NewPriorityQueue()
+	pq := New()
 
 	cities := []*models.City{
 		{

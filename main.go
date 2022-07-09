@@ -39,10 +39,12 @@ func main() {
 		log.Fatalf("Failed to build planet from file: %v", err)
 	}
 
-	if numAliens > len(planet.Cities)*2 {
+	if numAliens > (planet.GetNumCities())*2 {
 		log.Fatalf("Invalid number of aliens: cannot have more than 2x of cities. All cities will be destroyed")
 		os.Exit(1)
 	}
+
+	planet.PlaceAliens(numAliens)
 }
 
 func cmdErrMsg(msg string) {

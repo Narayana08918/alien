@@ -12,7 +12,7 @@ type PriorityQueue struct {
 	queue *items
 }
 
-func NewPriorityQueue() *PriorityQueue {
+func New() *PriorityQueue {
 	pq := &PriorityQueue{queue: &items{}}
 
 	heap.Init(pq.queue)

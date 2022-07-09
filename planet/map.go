@@ -11,7 +11,7 @@ import (
 
 // Read the map file to build cities and with edges and directions
 // Return the planet object once the map is drawn
-func BuildMap(mapFile string) (*models.Planet, error) {
+func BuildMap(mapFile string) (*Planet, error) {
 	file, err := os.Open(mapFile)
 	if err != nil {
 		return nil, err
@@ -49,5 +49,7 @@ func BuildMap(mapFile string) (*models.Planet, error) {
 		return nil, err
 	}
 
-	return planet, nil
+	return &Planet{
+		planet: planet,
+	}, nil
 }
