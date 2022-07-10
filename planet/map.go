@@ -3,6 +3,7 @@ package planet
 import (
 	"bufio"
 	"errors"
+	"fmt"
 	"os"
 	"strings"
 
@@ -52,4 +53,26 @@ func BuildMap(mapFile string) (*Planet, error) {
 	return &Planet{
 		planet: planet,
 	}, nil
+}
+
+func (p *Planet) WriteFinalMap(outfile string) error {
+	file, err := os.Create(outfile)
+	if err != nil {
+		return err
+	}
+
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	defer file.Close()
+
+	for _, city := range p.planet.Cities {
+		s := city.String()
+		if len(s) != 0 {
+			fmt.Fprintln(writer, s)
+			writer.Flush()
+		}
+	}
+
+	return nil
 }

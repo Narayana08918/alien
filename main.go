@@ -49,10 +49,15 @@ func main() {
 	attack := attacks.New(planet)
 	err = attack.Run()
 	if err != nil {
-		log.Fatal("Failed to execute alien invasion attacks:", err)
+		log.Fatal("Failed to execute alien invasion attacks. Err:", err)
 		os.Exit(1)
 	}
 
+	err = planet.WriteFinalMap(finalMapFile)
+	if err != nil {
+		log.Fatal("Failed to write the map to file. Err:", err)
+		os.Exit(1)
+	}
 }
 
 func cmdErrMsg(msg string) {
