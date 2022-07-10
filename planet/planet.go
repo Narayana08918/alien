@@ -18,6 +18,10 @@ func NewPlanet() *Planet {
 	return &Planet{}
 }
 
+func (p *Planet) Get() *models.Planet {
+	return p.planet
+}
+
 func (p *Planet) GetNumCities() int {
 	return len(p.planet.Cities)
 }
@@ -102,4 +106,46 @@ func (p *Planet) destroyCity(city *models.City) []string {
 
 	delete(p.planet.Cities, city.Name)
 	return aliens
+}
+
+func (p *Planet) MoveAliens() (string, error) {
+	for _, alien := range p.planet.Aliens {
+		occupiedCity := alien.City
+		city := p.planet.Cities[occupiedCity]
+
+		for _, name := range city.Out {
+			city := p.planet.Cities[name]
+
+			if len(city.Aliens) < constants.MaxOccupancy {
+				delete(city.Aliens, alien.Name)
+
+				alien.City = city.Name
+				city.Aliens[alien.Name] = alien
+
+				return alien.Name, nil
+			}
+		}
+	}
+
+	return "", constants.ErrCannotMoveAliens
+}
+
+func (p *Planet) ExecuteFights() {
+	for _, alien := range p.planet.Aliens {
+		occupiedCity := alien.City
+		city := p.planet.Cities[occupiedCity]
+
+		// If maximum occupancy has been reached for a city, the occupying
+		// aliens will fight and destroy the city. As a result, the following
+		// will happen:
+		//
+		// 1. Both aliens will be removed from the map's known collection of
+		// aliens.
+		// 2. The city will be removed from the map and so are any links that
+		// lead into or out of it.
+		if len(city.Aliens) == constants.MaxOccupancy {
+			destroyedAliens := p.destroyCity(city)
+			log.Printf("%s has been destroyed by %s!", city.Name, strings.Join(destroyedAliens, " and "))
+		}
+	}
 }

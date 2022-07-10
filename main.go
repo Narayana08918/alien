@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/Narayana08918/alien/attacks"
 	"github.com/Narayana08918/alien/planet"
 )
 
@@ -45,6 +46,13 @@ func main() {
 	}
 
 	planet.PlaceAliens(numAliens)
+	attack := attacks.New(planet)
+	err = attack.Run()
+	if err != nil {
+		log.Fatal("Failed to execute alien invasion attacks:", err)
+		os.Exit(1)
+	}
+
 }
 
 func cmdErrMsg(msg string) {
